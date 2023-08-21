@@ -2,8 +2,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { ValidationError } = require('mongoose').Error;
 const User = require('../models/user');
+const { JWT_SECRET_DEV } = require('../utils/constant');
 
-/* const { NODE_ENV, JWT_SECRET } = process.env; */
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 const UnauthorizedError = require('../errors/unauthorizedError');
 const ConflictError = require('../errors/conflictError');
@@ -71,7 +72,14 @@ const login = (req, res, next) => {
       bcrypt.compare(password, user.password)
         .then((validUser) => {
           if (validUser) {
-            const token = jwt.sign({ _id: user._id }, 'my-secret-key', { expiresIn: '7d' });
+            // создадим токен
+            const token = jwt.sign(
+              { _id: user._id },
+              NODE_ENV === 'production' ? JWT_SECRET : JWT_SECRET_DEV,
+              { expiresIn: '7d' },
+            );
+
+            // вернём токен
             res.send({ token });
           } else {
             throw new UnauthorizedError('Неправильные почта или пароль');
