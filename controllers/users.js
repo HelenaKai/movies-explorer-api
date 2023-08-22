@@ -54,6 +54,8 @@ const updateUser = (req, res, next) => {
     .catch((error) => {
       if (error instanceof ValidationError) {
         next(new BadRequestError('Переданы некорректные данные при обновлении профиля.'));
+      } else if (error.code === 11000) {
+        next(new ConflictError('Пользователь с таким email уже существует'));
       } else {
         next(error);
       }
