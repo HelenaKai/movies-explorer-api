@@ -29,6 +29,7 @@ const createUser = (req, res, next) => {
         res.status(201).send({
           name: user.name,
           email: user.email,
+          _id: user._id,
         });
       })
       .catch((error) => {
@@ -48,7 +49,7 @@ const updateUser = (req, res, next) => {
   const { _id } = req.user;
   const { name, email } = req.body;
 
-  User.findByIdAndUpdate(_id, { name, email }, { new: true, runValidators: true })
+  User.findByIdAndUpdate(_id, { name, email }, { _id: 0, new: true, runValidators: true })
     .orFail(() => new NotFoundError('Пользователь не найден.'))
     .then((user) => res.status(200).send(user))
     .catch((error) => {

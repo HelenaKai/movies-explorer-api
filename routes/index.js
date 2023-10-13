@@ -15,7 +15,7 @@ router.post('/signin', validationLogin, login);
 
 router.use(auth);
 
-router.use('/users', userRoutes);
+router.use('/', userRoutes);
 router.use('/', movieRouter);
 
 router.use('*', (req, res, next) => {

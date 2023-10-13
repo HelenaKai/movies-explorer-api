@@ -5,6 +5,7 @@ const BadRequestError = require('../errors/badRequestError');
 const NotFoundError = require('../errors/notFoundError');
 const ForbiddenError = require('../errors/forbiddenError');
 
+// Функция createMovie создает новый фильм в базе данных,
 const createMovie = (req, res, next) => {
   const {
     country,
@@ -19,7 +20,7 @@ const createMovie = (req, res, next) => {
     nameRU,
     nameEN,
   } = req.body;
-
+  // Создание нового фильма в базе данных
   Movie.create({
     country,
     director,
@@ -32,7 +33,7 @@ const createMovie = (req, res, next) => {
     movieId,
     nameRU,
     nameEN,
-    owner: req.user._id,
+    owner: req.user._id, // Связываем фильм с текущим пользователем по id
   })
     .then((movie) => {
       res.status(201).send(movie);
@@ -46,6 +47,7 @@ const createMovie = (req, res, next) => {
     });
 };
 
+// Получение массива с фильмами
 const getSavedMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
     /* .populate(['owner', '_id']) */
@@ -55,6 +57,7 @@ const getSavedMovies = (req, res, next) => {
     .catch(next);
 };
 
+// Удаление фильма
 const deleteMovie = (req, res, next) => {
 /* const { movieId } = req.params; */
 

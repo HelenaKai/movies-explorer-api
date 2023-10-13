@@ -5,12 +5,10 @@ const {
   updateUser,
 } = require('../controllers/users');
 
-const { validationUpdateUser } = require('../middlewares/validation');
-
 // Получения информации о пользователе
-router.get('/me', getUserInfo);
+router.get('/users/me', getUserInfo);
 
 // Обновление данных
-router.patch('/me', validationUpdateUser, updateUser);
+router.patch('/users/me', updateUser); // обновляет информацию о пользователе (email и name)
 
 module.exports = router;

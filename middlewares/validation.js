@@ -1,7 +1,8 @@
 const { celebrate, Joi } = require('celebrate');
 
 // eslint-disable-next-line no-useless-escape
-const urlRegex = /^(http|https):\/\/(www\.)?[a-zA-Z0-9\-._~:\/?#[\]@!$&'()*+,;=]{2,256}\.[a-zA-Z0-9.\/?#-]{2,}$/;
+
+const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
 
 const validationLogin = celebrate({
   body: Joi.object().keys({
@@ -15,13 +16,6 @@ const validationUserInfo = celebrate({
     name: Joi.string().required().min(2).max(30),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(3),
-  }),
-});
-
-const validationUpdateUser = celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-    email: Joi.string().required().email(),
   }),
 });
 
@@ -50,7 +44,6 @@ const validationDeleteMovie = celebrate({
 module.exports = {
   validationLogin,
   validationUserInfo,
-  validationUpdateUser,
   validationCreateMovie,
   validationDeleteMovie,
 };
